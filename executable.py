@@ -9,13 +9,13 @@ import pandas as pd
 import data_funcs as df
 
 #Importing data
-trump = pd.read_csv('trump_reformat.csv')
-data = pd.read_csv('combined_dataset.csv')
+#trump = pd.read_csv('trump_reformat.csv')
+data = pd.read_csv('master.csv')
 
 #Loop until exit
 user_input = 'empty string'
 input2 = 'empty string'
-example = '1 all 0 all 2020 5 all all'
+example = '1 all all all 2020 11 all all all all 0'
 while user_input.upper() != 'EXIT':
     if user_input == 'empty string':
         print('You will be asked to input a filter or to exit. Please see the README for all valid values for each filter option')
@@ -31,10 +31,14 @@ while user_input.upper() != 'EXIT':
     if user_input.split(' ')[0] == '2':
         print('Here is your first filter: ' + user_input)
         input2 = input('Please input your second filter: ')
+        
     try:
-        df1, df2 = df.displays(user_input, input2, trump, data)
+        df1, df2 = df.displays(user_input, input2, data)
     except:
         if user_input.upper() == 'EXIT':
             print('Exiting')
         else:
             print('Invalid input')
+
+    #Tester code for errors
+    #df1, df2 = df.displays(user_input, input2, data)

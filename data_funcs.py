@@ -9,25 +9,41 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import skew
+import textfunctions_for_dash as tf
 
-def displays(input1, input2, trump, data):
+#trump
+
+def displays(input1, input2, data):
     
     #Defining the filter(s) as lists
     filter1 = input1.split(' ')
     filter2 = input2.split(' ')
     compare_bool = int(filter1[0]) - 1
     filter1 = filter1[1:]
-    columns = ['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour']
+    columns = ['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour', 'minutes', 'seconds', 'total_sentiment']
     all_index1 = []
-    all_index2 = []
     
     #Creating df1
     df1 = data.copy()
-    for i in range(0, 7):
+    for i in range(0, 9):
         if filter1[i] != 'all':
             filter1[i] = int(filter1[i])
             df1 = df1.drop(df1[df1[columns[i]] != filter1[i]].index)
-    
+            
+    #Filtering sentiment
+    if filter1[9] != 'all':
+        sent = float(filter1[9])
+        if sent == 0:
+            df1 = df1.drop(df1[df1['total_sentiment'] < -0.1].index)
+            df1 = df1.drop(df1[df1['total_sentiment'] > 0.1].index)
+        elif sent < 0:
+            df1 = df1.drop(df1[(sent - 0.1) > df1['total_sentiment']].index)
+            df1 = df1.drop(df1[sent < df1['total_sentiment']].index)
+        elif sent > 0:
+            df1 = df1.drop(df1[(sent + 0.1) < df1['total_sentiment']].index)
+            df1 = df1.drop(df1[sent > df1['total_sentiment']].index)
+        elif sent == 1 or sent == -1:
+            df1 = df1.drop(df1[df1['total_sentiment'] != sent].index)
     
     
     #Dealing with no comparing
@@ -43,14 +59,14 @@ def displays(input1, input2, trump, data):
         plt.show()
         
         #Temporal plot
-        for i in range(3, 7):
+        for i in range(3, 9):
             if filter1[i] == 'all':
                 all_index1.append(i)
         
         if len(all_index1) > 0:
             x_axis = all_index1[0]
         else:
-            x_axis = 6
+            x_axis = 8
         df1_dropped = df1.dropna(subset = [columns[x_axis]])
         sentiment1 = df1_dropped.groupby(columns[x_axis])['total_sentiment'].mean()
         plt.bar(sentiment1.index, sentiment1.values)
@@ -58,6 +74,12 @@ def displays(input1, input2, trump, data):
         plt.ylabel('Average Sentiment')
         plt.title('Sentiment Over Time')
         plt.show()
+        
+        #Word clouds
+        tf.mostpopularwordcloud(df1)
+        tf.mostpopularbigrams(df1)
+        tf.mostpopulartrigrams(df1)
+        
         
         #Descriptive stats
         list1 = df1['total_sentiment'].tolist()
@@ -77,16 +99,36 @@ def displays(input1, input2, trump, data):
     
     
     
+    
+    
+    
+    
+    
     #Dealing with yes comparing
     elif compare_bool == 1:
         print('Yes compare!')
         
         #Creating df2
         df2 = data.copy()
-        for i in range(0, 7):
+        for i in range(0, 9):
             if filter2[i] != 'all':
                 filter2[i] = int(filter2[i])
                 df2 = df2.drop(df2[df2[columns[i]] != filter2[i]].index)   
+        
+        #Filtering sentiment
+        if filter2[9] != 'all':
+            sent = float(filter2[9])
+            if sent == 0:
+                df1 = df1.drop(df1[df1['total_sentiment'] < -0.1].index)
+                df1 = df1.drop(df1[df1['total_sentiment'] > 0.1].index)
+            elif sent < 0:
+                df1 = df1.drop(df1[(sent - 0.1) > df1['total_sentiment']].index)
+                df1 = df1.drop(df1[sent < df1['total_sentiment']].index)
+            elif sent > 0:
+                df1 = df1.drop(df1[(sent + 0.1) < df1['total_sentiment']].index)
+                df1 = df1.drop(df1[sent > df1['total_sentiment']].index)
+            elif sent == 1 or sent == -1:
+                df1 = df1.drop(df1[df1['total_sentiment'] != sent].index)  
         
         #Plotting and computing
         #Sentiment distribution
@@ -99,14 +141,14 @@ def displays(input1, input2, trump, data):
         plt.show()
         
         #Temporal plot
-        for i in range(3, 7):
+        for i in range(3, 9):
             if filter1[i] == 'all':
                 all_index1.append(i)
         
         if len(all_index1) > 0:
             x_axis = all_index1[0]
         else:
-            x_axis = 6
+            x_axis = 8
         df1_dropped = df1.dropna(subset = [columns[x_axis]])
         df2_dropped = df2.dropna(subset = [columns[x_axis]])
         sentiment1 = df1_dropped.groupby(columns[x_axis])['total_sentiment'].mean()
@@ -118,6 +160,16 @@ def displays(input1, input2, trump, data):
         plt.ylabel('Average Sentiment')
         plt.title('Sentiment Over Time')
         plt.show()
+        
+        #Word clouds
+        print('Word cloud stuff for dataset 1')
+        tf.mostpopularwordcloud(df1)
+        tf.mostpopularbigrams(df1)
+        tf.mostpopulartrigrams(df1)
+        print('Word cloud stuff for dataset 2')
+        tf.mostpopularwordcloud(df2)
+        tf.mostpopularbigrams(df2)
+        tf.mostpopulartrigrams(df2)
         
         #Descriptive stats
         list1 = df1['total_sentiment'].tolist()
