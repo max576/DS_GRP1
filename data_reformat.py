@@ -34,12 +34,14 @@ covid_data3 = pd.read_csv('Data/covid_tweets/Covid-19 Twitter Dataset (Apr-Jun 2
 covid_data_combined = pd.concat([covid_data1, covid_data2, covid_data3])
 afghanistan = pd.read_csv('Data/Afghanistan_pd_with_Sentiments_Vader.csv')
 biden_reelec = pd.read_csv('Data/biden_reelection_with_Sentiments_Vader.csv')
-#biden_t = pd.read_csv('Data/Biden_Tweets_with_Sentiments_Vader.csv')
+biden_t = pd.read_csv('Data/Biden_Tweets_with_Sentiments_Vader.csv')
 biden_yt = pd.read_csv('Data/Biden_Youtube_with_Sentiments_Vader.csv')
-impeach = pd.read_csv('Data/Impeached_pd_with_Sentiments_Vader_time .csv')
+impeach1 = pd.read_csv('Data/Impeached_pd_with_Sentiments_Vader_time .csv')
+impeach2 = pd.read_csv('Data/Impeached_Sentiments_Vader.csv')
+impeach = pd.concat([impeach1, impeach2])
 trump_reelec = pd.read_csv('Data/trump_reelection_with_Sentiments_Vader.csv')
-#trump_t = pd.read_csv('Data/Trump_Tweets_with_Sentiments_Vader.csv')
-#trump_yt = pd.read_csv('Data/Trump_Youtube_with_Sentiments.csv')
+trump_t = pd.read_csv('Data/Trump_Tweets_with_Sentiments_Vader.csv')
+trump_yt = pd.read_csv('Data/Youtube_trump_df_with_Sentiments_Vader.csv')
 
 
 
@@ -75,6 +77,13 @@ afghanistan['place'] = np.nan
 afghanistan = afghanistan[['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour', 'minute', 'second', 'total_sentiment', 'clean_tweet']]
 
 #Biden Tweets
+biden_t['place'] = biden_t['state']
+biden_t['clean_tweet'] = biden_t['ClearTweet']
+biden_t['total_sentiment'] = biden_t['SentimentScore']
+biden_t['dataset_id'] = 2
+biden_t['platform'] = 0
+biden_t[['year', 'month', 'day', 'hour', 'minute', 'second']] = np.nan
+biden_t = biden_t[['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour', 'minute', 'second', 'total_sentiment', 'clean_tweet']]
 
 #Biden Youtube
 biden_yt['total_sentiment'] = biden_yt['Video Title'].shift(-1)
@@ -90,6 +99,7 @@ biden_yt['dataset_id'] = 3
 biden_yt['platform'] = 1
 biden_yt['place'] = np.nan
 biden_yt = biden_yt[['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour', 'minute', 'second', 'total_sentiment', 'clean_tweet']]
+
 
 #Biden reelection
 biden_reelec[['date', 'time']] = biden_reelec['Published At'].str.split('T', expand = True)
@@ -120,8 +130,27 @@ impeach['place'] = np.nan
 impeach = impeach[['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour', 'minute', 'second', 'total_sentiment', 'clean_tweet']]
 
 #Trump Tweets
+trump_t['place'] = trump_t['state']
+trump_t['clean_tweet'] = trump_t['ClearTweet']
+trump_t['total_sentiment'] = trump_t['SentimentScore']
+trump_t['dataset_id'] = 6
+trump_t['platform'] = 0
+trump_t[['year', 'month', 'day', 'hour', 'minute', 'second']] = np.nan
+trump_t = trump_t[['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour', 'minute', 'second', 'total_sentiment', 'clean_tweet']]
 
 #Trump Youtube
+trump_yt[['date', 'time']] = trump_yt['Published At'].str.split('T', expand = True)
+trump_yt['time'] = trump_yt['time'].str.replace('Z', '')
+trump_yt[['year', 'month', 'day']] = trump_yt['date'].str.split('-', expand = True)
+trump_yt[['hour', 'minute', 'second']] = trump_yt['time'].str.split(':', expand = True)
+trump_yt.dropna(subset=['year', 'month', 'day', 'hour', 'minute', 'second'], inplace = True)
+trump_yt[['year', 'month', 'day', 'hour', 'minute', 'second']] = trump_yt[['year', 'month', 'day', 'hour', 'minute', 'second']].astype(int)
+trump_yt['clean_tweet'] = trump_yt['Comment']
+trump_yt['total_sentiment'] = trump_yt['Sentiment']
+trump_yt['dataset_id'] = 7
+trump_yt['platform'] = 1
+trump_yt['place'] = np.nan
+trump_yt = trump_yt[['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour', 'minute', 'second', 'total_sentiment', 'clean_tweet']]
 
 #Trump reelection
 trump_reelec[['date', 'time']] = trump_reelec['Published At'].str.split('T', expand = True)
@@ -138,12 +167,19 @@ trump_reelec['place'] = np.nan
 trump_reelec = trump_reelec[['dataset_id', 'platform', 'place', 'year', 'month', 'day', 'hour', 'minute', 'second', 'total_sentiment', 'clean_tweet']]
 
 
-#Combining the datasets and exporting the full dataframe along with the source stats
-#With covid dataset
-master = pd.concat([covid_data_combined, afghanistan, biden_yt, biden_reelec, impeach, trump_reelec])
-#Without covid dataset
-#master = pd.concat([afghanistan, biden_yt, biden_reelec, impeach, trump_reelec])
 
+#Combining the datasets and exporting the full dataframe along with the source stats
+right_ans = 0
+while right_ans == 0:
+    user = input('Would you like to include the covid dataset in the master dataset? (Y/N): ')
+    #With covid dataset
+    if user.upper() == 'Y':
+        master = pd.concat([covid_data_combined, afghanistan, biden_t, biden_yt, biden_reelec, impeach, trump_t, trump_yt, trump_reelec])
+        right_ans = 1
+    #Without covid dataset
+    elif user.upper() == 'N':
+        master = pd.concat([afghanistan, biden_t, biden_yt, biden_reelec, impeach, trump_t, trump_yt, trump_reelec])
+        right_ans = 1
 
 # metadata = pd.DataFrame({'source':source, 'platfrom':platform, 'original_size':original_size, 'cleaned_size':cleaned_size})
 # metadata.to_csv('metadata.csv')
