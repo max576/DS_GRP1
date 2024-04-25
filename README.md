@@ -5,7 +5,7 @@ Links to google docs:
 https://docs.google.com/document/d/12y5kILSYFMcIpSWvk6qfEF4lb7wT_IQq8h0Obh826iU/edit?usp=sharing
 https://docs.google.com/document/d/1tIbfGKZuO1QhW3nz2VZIhd6uOZD1VC3KJoK7be7fcJI/edit
 
-Before running the dashboard, you may need to install the python wordcloud module. You will need to run:
+Before running the dashboard, you may need to install the python _wordcloud_ module. You will need to run:
 
 _pip install wordcloud_
 
@@ -17,19 +17,21 @@ _data_funcs.py_
 
 _textfunction_for_dash.py_
 
-_master.csv_ (This will need to be downloaded from the teams repo becuase itŝ too big for github)
+_master.csv_ (This will need to be downloaded from the teams repo becuase it`s too big for github)
 
-By default, the master dataset does not include the covid data. If you want the covid dataset, you will need to download:
+By default, the master dataset does not include the covid data. If you want the covid dataset, you will need to download and put the following files into the same folder as the other files:
 
-_Data (folder)_
+_Data_ (folder)
+
+_Youtube_trump_df_with_Sentiments_Vader.csv_ (Needs to be taken from teams and put into the _Data_ folder)
 
 _data_reformat.py_
 
-To make the covid dataset part of the master dataset, just run data_reformat.py then proceed as usual to the dashboard.
+To make the covid dataset part of the master dataset, just run _data_reformat.py_ then proceed as usual to the dashboard.
 
 
 
-To run the dashboard, you will need to run executable.py and follow its instructions.
+To run the dashboard, you will need to run _executable.py_ and follow its instructions.
 The instructions will tell you to input filters to reduce the dataset. Here is an explaination of all of the filter options:
 
 To not compare, the filter should look like this:
@@ -46,7 +48,7 @@ _dataset platform place year month day hour minute second sentiment_
 
 
 All values should be separated by one space and should be taken from the following list
-(Note that for every parameter, 'all' is an option and, when used, it will not filter down that parameter):
+(Note that for every parameter, _all_ is an option and, when used, it will not filter down that parameter):
 
 dataset: _0) covid, 1) Afghanistan (Youtube), 2) Biden Tweets, 3) Biden Youtube, 4) Biden reelection (Youtube) 5) Impeachment speech (Youtube), 6) Trump Tweets, 7) Trump Youtube, 8) Trump reelection (Youtube)_
         
