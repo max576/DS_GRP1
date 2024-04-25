@@ -17,7 +17,7 @@ _data_funcs.py_
 
 _textfunction_for_dash.py_
 
-_master.csv_
+_master.csv_ (This will need to be downloaded from the teams repo becuase itŝ too big for github)
 
 By default, the master dataset does not include the covid data. If you want the covid dataset, you will need to download:
 
