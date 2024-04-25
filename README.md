@@ -5,6 +5,10 @@ Links to google docs:
 https://docs.google.com/document/d/12y5kILSYFMcIpSWvk6qfEF4lb7wT_IQq8h0Obh826iU/edit?usp=sharing
 https://docs.google.com/document/d/1tIbfGKZuO1QhW3nz2VZIhd6uOZD1VC3KJoK7be7fcJI/edit
 
+Before running the dashboard, you may need to install the python wordcloud module. You will need to run:
+
+pip install wordcloud
+
 To Run the dashboard, you will need to download and put the following files into the same folder:
 
 executable.py
