@@ -7,23 +7,23 @@ https://docs.google.com/document/d/1tIbfGKZuO1QhW3nz2VZIhd6uOZD1VC3KJoK7be7fcJI/
 
 Before running the dashboard, you may need to install the python wordcloud module. You will need to run:
 
-pip install wordcloud
+_pip install wordcloud_
 
 To Run the dashboard, you will need to download and put the following files into the same folder:
 
-executable.py
+_executable.py_
 
-data_funcs.py
+_data_funcs.py_
 
-textfunction_for_dash.py
+_textfunction_for_dash.py_
 
-master.csv
+_master.csv_
 
 By default, the master dataset does not include the covid data. If you want the covid dataset, you will need to download:
 
-Data (folder)
+_Data (folder)_
 
-data_reformat.py
+_data_reformat.py_
 
 To make the covid dataset part of the master dataset, just run data_reformat.py then proceed as usual to the dashboard.
 
@@ -34,34 +34,34 @@ The instructions will tell you to input filters to reduce the dataset. Here is a
 
 To not compare, the filter should look like this:
 
-1 dataset platform place year month day hour minute second sentiment
+_1 dataset platform place year month day hour minute second sentiment_
 
 To compare datasets, the first filter should look like this:
 
-2 dataset platform place year month day hour minute second sentiment
+_2 dataset platform place year month day hour minute second sentiment_
 
 And the second should look like this:
 
-dataset platform place year month day hour minute second sentiment
+_dataset platform place year month day hour minute second sentiment_
 
 
 All values should be separated by one space and should be taken from the following list
 (Note that for every parameter, 'all' is an option and, when used, it will not filter down that parameter):
 
-dataset: 0) covid, 1) Afghanistan (Youtube), 2) Biden Tweets, 3) Biden Youtube, 4) Biden reelection (Youtube) 5) Impeachment speech (Youtube), 6) Trump Tweets, 7) Trump Youtube, 8) Trump reelection (Youtube)
+dataset: _0) covid, 1) Afghanistan (Youtube), 2) Biden Tweets, 3) Biden Youtube, 4) Biden reelection (Youtube) 5) Impeachment speech (Youtube), 6) Trump Tweets, 7) Trump Youtube, 8) Trump reelection (Youtube)_
         
-platform: 0) Twitter, 1) Youtube
+platform: _0) Twitter, 1) Youtube_
 
 place: Specific place name
 
-year: 2019 - 2024
+year: _2019 - 2024_
 
-month: 1 - 12
+month: _1 - 12_
 
-day: 1 - 31
+day: _1 - 31_
 
-hour: 0 - 23
+hour: _0 - 23_
 
-minute, second: 0 - 59
+minute, second: _0 - 59_
 
-sentimemt: Any float between -1 and 1
+sentimemt: Any float between _-1_ and _1_
